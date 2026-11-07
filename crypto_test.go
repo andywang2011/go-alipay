@@ -96,19 +96,6 @@ func TestDecryptMobileRoundTrip(t *testing.T) {
 	}
 }
 
-func encryptTestCiphertext(t *testing.T, plain string) string {
-	t.Helper()
-	key, _ := base64.StdEncoding.DecodeString(testConfig().AesKey)
-	block, err := aes.NewCipher(key)
-	if err != nil {
-		t.Fatal(err)
-	}
-	iv := make([]byte, 16)
-	pad := pkcs7Pad([]byte(plain), block.BlockSize())
-	enc := make([]byte, len(pad))
-	cipher.NewCBCEncrypter(block, iv).CryptBlocks(enc, pad)
-	return base64.StdEncoding.EncodeToString(enc)
-}
 
 func pkcs7Pad(data []byte, blockSize int) []byte {
 	n := blockSize - len(data)%blockSize
